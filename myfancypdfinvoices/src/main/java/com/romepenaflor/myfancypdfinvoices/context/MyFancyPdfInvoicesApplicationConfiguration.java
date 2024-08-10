@@ -6,10 +6,13 @@ import com.romepenaflor.myfancypdfinvoices.service.InvoiceService;
 import com.romepenaflor.myfancypdfinvoices.service.UserService;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /*
 @PropertySource reads in the properties files. When there are multiples, the bottom one
 has the precedence, rewriting the ones on top.
+@EnableWebMvc initializes Spring Web MVC with default config, and automatically registers a
+JSON converter for JSON <-> Java object conversions
 */
 
 @Configuration
@@ -17,6 +20,7 @@ has the precedence, rewriting the ones on top.
 @PropertySource("classpath:/application.properties")
 @PropertySource(value = "classpath:/application-${spring.profiles.active}.properties"
                 , ignoreResourceNotFound = true)
+@EnableWebMvc
 public class MyFancyPdfInvoicesApplicationConfiguration {
     // by default, @ComponentScan only scans the packages and subpackages of the annotated class
     // hence the addition of a class in root packaged as basePackageClass
