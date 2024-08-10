@@ -1,11 +1,9 @@
 package com.romepenaflor.myfancypdfinvoices.web;
 
+import com.romepenaflor.myfancypdfinvoices.dto.InvoiceDto;
 import com.romepenaflor.myfancypdfinvoices.model.Invoice;
 import com.romepenaflor.myfancypdfinvoices.service.InvoiceService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,9 +28,16 @@ public class MyFancyPdfInvoicesController {
         return invoiceService.findAll();
     }
 
+    /*
     @PostMapping("/invoices")
     public Invoice createInvoice(@RequestParam("user_id") String userId,
                                  @RequestParam Integer amount) {
         return invoiceService.create(userId, amount);
+    }
+    */
+
+    @PostMapping("/invoices")
+    public Invoice createInvoice(@RequestBody InvoiceDto invoiceDto) {
+        return invoiceService.create(invoiceDto.getUserId(), invoiceDto.getAmount());
     }
 }
