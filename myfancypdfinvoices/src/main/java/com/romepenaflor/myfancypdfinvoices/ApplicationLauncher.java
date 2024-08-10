@@ -1,10 +1,15 @@
 package com.romepenaflor.myfancypdfinvoices;
 
+import com.romepenaflor.myfancypdfinvoices.context.MyFancyPdfInvoicesApplicationConfiguration;
 import com.romepenaflor.myfancypdfinvoices.web.MyFirstServlet;
+import jakarta.servlet.ServletContext;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.startup.Tomcat;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
+import org.springframework.web.servlet.DispatcherServlet;
 
 public class ApplicationLauncher {
 
@@ -16,9 +21,10 @@ public class ApplicationLauncher {
 
         // "" as contextPath means we only have one application
         // null static files since we have no static files to deliver
-        Context ctx = tomcat.addContext("", null);
+        Context tomcatCtx = tomcat.addContext("", null);
 
-        // add servlet to tomcat
+        /*
+        //add servlet to tomcat
         Wrapper servlet = Tomcat.addServlet(ctx, "myFirstServlet", new MyFirstServlet());
 
         // 1 to load servlet on the very first HTTP request
@@ -26,7 +32,32 @@ public class ApplicationLauncher {
 
         // servlet to response to requests starting with "/"
         servlet.addMapping("/*");
+        */
+
+        /*
+         Creating a DispatcherServlet, Spring MVC's own servlet to replace the servlet above
+         and to recognize @Controller, @GetMapping, etc...
+        */
+        WebApplicationContext appCtx = createApplicationContext(tomcatCtx.getServletContext());
+
+        // entry point of WebMVC
+        // able to forward incoming request to controllers and back to browser
+        DispatcherServlet dispatcherServlet = new DispatcherServlet(appCtx);
+
+        // register dispatcherServlet
+        Wrapper servlet = Tomcat.addServlet(tomcatCtx, "dispatcherServlet", dispatcherServlet);
+        servlet.setLoadOnStartup(1);
+        servlet.addMapping("/*");
 
         tomcat.start();
+    }
+
+    public static WebApplicationContext createApplicationContext(ServletContext servletContext) {
+        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+        ctx.register(MyFancyPdfInvoicesApplicationConfiguration.class);
+        ctx.setServletContext(servletContext);
+        ctx.refresh();
+        ctx.registerShutdownHook();
+        return ctx;
     }
 }
