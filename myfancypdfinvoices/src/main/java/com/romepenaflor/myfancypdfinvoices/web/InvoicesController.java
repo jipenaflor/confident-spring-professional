@@ -4,10 +4,6 @@ import com.romepenaflor.myfancypdfinvoices.dto.InvoiceDto;
 import com.romepenaflor.myfancypdfinvoices.model.Invoice;
 import com.romepenaflor.myfancypdfinvoices.service.InvoiceService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,11 +17,11 @@ import java.util.List;
 // @Validated is added when validation annotations are in the controller
 @RestController
 //@Validated
-public class MyFancyPdfInvoicesController {
+public class InvoicesController {
 
     private final InvoiceService invoiceService;
 
-    public MyFancyPdfInvoicesController(InvoiceService invoiceService) {
+    public InvoicesController(InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
     }
 

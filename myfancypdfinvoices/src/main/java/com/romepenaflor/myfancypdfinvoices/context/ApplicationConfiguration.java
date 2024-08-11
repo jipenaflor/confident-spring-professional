@@ -2,11 +2,7 @@ package com.romepenaflor.myfancypdfinvoices.context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.romepenaflor.myfancypdfinvoices.ApplicationLauncher;
-import com.romepenaflor.myfancypdfinvoices.service.InvoiceService;
-import com.romepenaflor.myfancypdfinvoices.service.UserService;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.*;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /*
@@ -22,7 +18,7 @@ JSON converter for JSON <-> Java object conversions
 @PropertySource(value = "classpath:/application-${spring.profiles.active}.properties"
                 , ignoreResourceNotFound = true)
 @EnableWebMvc
-public class MyFancyPdfInvoicesApplicationConfiguration {
+public class ApplicationConfiguration {
     // by default, @ComponentScan only scans the packages and subpackages of the annotated class
     // hence the addition of a class in root packaged as basePackageClass
 

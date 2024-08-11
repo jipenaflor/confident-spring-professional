@@ -1,7 +1,7 @@
 package com.romepenaflor.myfancypdfinvoices.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.romepenaflor.myfancypdfinvoices.context.MyFancyPdfInvoicesApplicationConfiguration;
+import com.romepenaflor.myfancypdfinvoices.context.ApplicationConfiguration;
 import com.romepenaflor.myfancypdfinvoices.model.Invoice;
 import com.romepenaflor.myfancypdfinvoices.service.InvoiceService;
 import com.romepenaflor.myfancypdfinvoices.service.UserService;
@@ -22,7 +22,7 @@ public class MyFirstServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         AnnotationConfigApplicationContext ctx =
-                new AnnotationConfigApplicationContext(MyFancyPdfInvoicesApplicationConfiguration.class);
+                new AnnotationConfigApplicationContext(ApplicationConfiguration.class);
 
         /*
         Whenever the JVM is about to stop, Spring calls @PreDestroy methods of registered beans
