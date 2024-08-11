@@ -6,6 +6,7 @@ import com.romepenaflor.myfancypdfinvoices.service.InvoiceService;
 import com.romepenaflor.myfancypdfinvoices.service.UserService;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.*;
+import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 /*
@@ -41,6 +42,15 @@ public class MyFancyPdfInvoicesApplicationConfiguration {
     @Bean
     public InvoiceService invoiceService() {
         return new InvoiceService(userService());
+    }
+    */
+
+    // Needed for validation to work in controllers if the annotations are
+    // along the @RequestParam parameters
+    /*
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor() {
+        return new MethodValidationPostProcessor();
     }
     */
 
