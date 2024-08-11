@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 // @Profile - specify different properties or Spring beans in different environment
-// run with -Dspring.profiles.active=dev
+// run with -Dspring.profiles.active=dev in VM options
 @Service
 @Profile("dev")
 public class DummyInvoiceService {
