@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.romepenaflor.myfancypdfinvoices.ApplicationLauncher;
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring6.view.ThymeleafViewResolver;
 
 /*
 @PropertySource reads in the properties files. When there are multiples, the bottom one
@@ -54,5 +57,34 @@ public class ApplicationConfiguration {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    // Beans needed for Thymeleaf and Spring MVC to work together
+    // Spring asks ViewResolvers to find and render the index.html template
+    @Bean
+    public ThymeleafViewResolver viewResolver() {
+        ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
+        viewResolver.setTemplateEngine(templateEngine());
+
+        viewResolver.setOrder(1);
+        viewResolver.setViewNames(new String[] {"*.html", "*.xtml"});   // optional
+        return viewResolver;
+    }
+
+    // Configured to work for a Thymeleaf-specific configuration bean
+    @Bean
+    public SpringTemplateEngine templateEngine() {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(templateResolver());
+        return templateEngine;
+    }
+
+    // Class that finds your thymeleaf template
+    @Bean
+    public SpringResourceTemplateResolver templateResolver() {
+        SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+        templateResolver.setPrefix("classpath:/templates/");
+        templateResolver.setCacheable(false);
+        return templateResolver;
     }
 }
