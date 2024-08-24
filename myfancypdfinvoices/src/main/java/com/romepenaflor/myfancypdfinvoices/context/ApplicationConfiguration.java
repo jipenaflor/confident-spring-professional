@@ -66,8 +66,8 @@ public class ApplicationConfiguration {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
 
-        viewResolver.setOrder(1);
-        viewResolver.setViewNames(new String[] {"*.html", "*.xtml"});   // optional
+        viewResolver.setOrder(1); // optional
+        viewResolver.setViewNames(new String[] {"*.html", "*.xhtml"}); // optional
         return viewResolver;
     }
 
