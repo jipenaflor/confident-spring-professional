@@ -6,8 +6,11 @@
 </head>
 <body>
     <p>Hello
+        <!--th:text replaces the tag's content with what is specified-->
+        <!--remove tag ensures that span is not rendered in the final output-->
         <span th:text="${username}" th:remove="tag">[Username]</span>,
         this is the current date
+        <!--#temporals is a thymeleaf-specific template helper function-->
         <span th:text="${#temporals.format(currentDate, 'dd-MM-yyyy HH:mm')}">[currentDate]</span>
     </p>
     <div th:if="${username.startsWith('z')}">Your name starts with a lower-case z, unusual!</div>
