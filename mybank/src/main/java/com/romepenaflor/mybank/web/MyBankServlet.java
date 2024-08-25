@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class MyBankServlet extends HttpServlet {
+    /*
     private TransactionService transactionService;
     private ObjectMapper objectMapper;
 
@@ -60,4 +61,6 @@ public class MyBankServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
     }
+    */
 }
+

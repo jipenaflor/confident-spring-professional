@@ -31,7 +31,7 @@ public class WebController {
     // @ModelAttribute makes sure that you can access the form in the model as if model.put(...)
     // binding result is put right after the loginForm to bind with it
     @PostMapping("/login")
-    public String login(@ModelAttribute @Valid LoginForm loginForm,BindingResult bindingResult,  Model model ){
+    public String login(@ModelAttribute @Valid LoginForm loginForm, BindingResult bindingResult,  Model model ){
         /*
         added to catch the exception thrown by GlobalExceptionHandler so that appropriate error
         message is displayed at the frontend

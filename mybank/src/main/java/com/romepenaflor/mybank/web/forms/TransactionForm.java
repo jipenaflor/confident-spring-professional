@@ -1,14 +1,16 @@
-package com.romepenaflor.mybank.dto;
+package com.romepenaflor.mybank.web.forms;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
-public class TransactionDto {
+public class TransactionForm {
     @NotNull
+    @DecimalMin("0.01")
+    @Max(1000)
     private BigDecimal amount;
     @NotBlank
+    @Size(min = 1, max = 25)
     private String reference;
     @NotBlank
     private String receivingUser;
@@ -27,11 +29,10 @@ public class TransactionDto {
         this.reference = reference;
     }
 
-    public void setReceivingUser(String receivingUser) {
-        this.receivingUser = receivingUser;
-    }
-
     public String getReceivingUser() {
         return receivingUser;
+    }
+    public void setReceivingUser(String receivingUser) {
+        this.receivingUser = receivingUser;
     }
 }

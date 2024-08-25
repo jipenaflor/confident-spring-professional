@@ -19,15 +19,18 @@ public class Transaction {
 
     private String bankSlogan;
 
+    private String receivingUser;
+
     public Transaction() {
     }
 
-    public Transaction(BigDecimal amount, ZonedDateTime timestamp, String reference, String bankSlogan) {
+    public Transaction(BigDecimal amount, ZonedDateTime timestamp, String reference, String bankSlogan, String receivingUser) {
         this.id = UUID.randomUUID().toString();
         this.amount = amount;
         this.timestamp = timestamp;
         this.reference = reference;
         this.bankSlogan = bankSlogan;
+        this.receivingUser = receivingUser;
     }
 
     public String getId() {
@@ -68,5 +71,13 @@ public class Transaction {
 
     public void setBankSlogan(String bankSlogan) {
         this.bankSlogan = bankSlogan;
+    }
+
+    public String getReceivingUser() {
+        return receivingUser;
+    }
+
+    public void setReceivingUser(String receivingUser) {
+        this.receivingUser = receivingUser;
     }
 }
