@@ -7,15 +7,22 @@ import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 // @Component with stronger semantic meaning = @Services
 @Service
 public class InvoiceService {
+    private final JdbcTemplate jdbcTemplate;
 
     // Field injection: constructor and final modifier removed, replaced with @Autowired
     // @Autowired
@@ -26,23 +33,55 @@ public class InvoiceService {
 
     // Spring injects fields after calling the constructor
     // Inject properties with @Value
-    public InvoiceService(UserService userService, @Value("${cdn.url}") String cdnUrl) {
+    public InvoiceService(UserService userService, JdbcTemplate jdbcTemplate,
+                          @Value("${cdn.url}") String cdnUrl) {
         this.userService = userService;
         this.cdnUrl = cdnUrl;
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     public List<Invoice> findAll() {
-        return invoices;
+        // row mapper lets you map every returned row to a Java object
+        return jdbcTemplate.query("select id, user_id, pdf_url, amount from invoices", (resultSet, rowNum) -> {
+            Invoice invoice = new Invoice();
+            invoice.setId(resultSet.getObject("id").toString());    // Not a simple string, but a UUID string
+            invoice.setPdfUrl(resultSet.getString("pdf_url"));
+            invoice.setUserId(resultSet.getString("user_id"));
+            invoice.setAmount(resultSet.getInt("amount"));
+            return invoice;
+        });
     }
 
     public Invoice create(String userId, Integer amount) {
-        User user =  userService.findById(userId);
-        if (user == null) {
-            throw new IllegalStateException();
-        }
+        String generatedPdfUrl = cdnUrl + "/images/default/sample.pdf";
 
-        Invoice invoice = new Invoice(userId, amount, cdnUrl + "/images/default/sample.pdf");
-        invoices.add(invoice);
+        // make sure that the generated primary key is available via the keyholder
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection
+                    .prepareStatement("insert into invoices (user_id, pdf_url, amount) values (?, ?, ?)",
+                            Statement.RETURN_GENERATED_KEYS);
+            // setting parameters replaced the (?, ?, ?); safeguard against SQL-injections
+            ps.setString(1, userId);
+            ps.setString(2, generatedPdfUrl);
+            ps.setInt(3, amount);
+            return ps;
+        }, keyHolder);
+
+        /* return the auto-generated UUID primary key from the database
+        GeneratedKeyHolder has a convenient way to return a numeric one, but not for the UUIDs, hence,
+        the use of ternary operators
+        */
+        String uuid = !keyHolder.getKeys().isEmpty() ? ((UUID) keyHolder.getKeys().
+                values().iterator().next()).toString() : null;
+
+        // create invoice object
+        Invoice invoice = new Invoice();
+        invoice.setId(uuid);
+        invoice.setPdfUrl(generatedPdfUrl);
+        invoice.setAmount(amount);
+        invoice.setUserId(userId);
         return invoice;
     }
 

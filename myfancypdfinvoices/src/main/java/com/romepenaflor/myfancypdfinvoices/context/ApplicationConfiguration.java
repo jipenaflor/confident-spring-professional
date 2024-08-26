@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.romepenaflor.myfancypdfinvoices.ApplicationLauncher;
 import org.h2.jdbcx.JdbcDataSource;
 import org.springframework.context.annotation.*;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
@@ -66,13 +67,20 @@ public class ApplicationConfiguration {
     public DataSource dataSource() {
         JdbcDataSource ds = new JdbcDataSource();   // H2 datasource
         /*
-        Open a db in a file called myfirsth2datbase.mv.db in ~/ directory, then
+        Open a db in a file called myfirsth2database.mv.db in ~/ directory, then
         run the SQL file in the classpath whenever someone connects to the database
         */
         ds.setURL("jdbc:h2:~/myFirstH2Database;INIT=RUNSCRIPT FROM 'classpath:schema.sql'");
         ds.setUser("sa");
         ds.setPassword("sa");
         return ds;
+    }
+
+    // wrapper class around Java's JDBC facilities to execute SQL statements
+    // thread-safe, can be used by multiple threads at the same time
+    @Bean
+    public JdbcTemplate jdbcTemplate() {
+        return new JdbcTemplate(dataSource());
     }
 
     // Beans needed for Thymeleaf and Spring MVC to work together
