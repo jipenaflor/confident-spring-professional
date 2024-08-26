@@ -31,7 +31,8 @@ public class InvoiceService {
     private final UserService userService;
     private final String cdnUrl;
 
-    List<Invoice> invoices = new CopyOnWriteArrayList<>();
+    // in-memory list
+    // List<Invoice> invoices = new CopyOnWriteArrayList<>();
 
     // Spring injects fields after calling the constructor
     // Inject properties with @Value
