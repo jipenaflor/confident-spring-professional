@@ -2,11 +2,14 @@ package com.romepenaflor.myfancypdfinvoices.context;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.romepenaflor.myfancypdfinvoices.ApplicationLauncher;
+import org.h2.jdbcx.JdbcDataSource;
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring6.view.ThymeleafViewResolver;
+
+import javax.sql.DataSource;
 
 /*
 @PropertySource reads in the properties files. When there are multiples, the bottom one
@@ -57,6 +60,19 @@ public class ApplicationConfiguration {
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();
+    }
+
+    @Bean
+    public DataSource dataSource() {
+        JdbcDataSource ds = new JdbcDataSource();   // H2 datasource
+        /*
+        Open a db in a file called myfirsth2datbase.mv.db in ~/ directory, then
+        run the SQL file in the classpath whenever someone connects to the database
+        */
+        ds.setURL("jdbc:h2:~/myFirstH2Database;INIT=RUNSCRIPT FROM 'classpath:schema.sql'");
+        ds.setUser("sa");
+        ds.setPassword("sa");
+        return ds;
     }
 
     // Beans needed for Thymeleaf and Spring MVC to work together
