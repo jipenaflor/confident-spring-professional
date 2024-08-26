@@ -5,6 +5,9 @@ import com.romepenaflor.myfancypdfinvoices.ApplicationLauncher;
 import org.h2.jdbcx.JdbcDataSource;
 import org.springframework.context.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.TransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
@@ -25,6 +28,7 @@ JSON converter for JSON <-> Java object conversions
 @PropertySource(value = "classpath:/application-${spring.profiles.active}.properties"
                 , ignoreResourceNotFound = true)
 @EnableWebMvc
+@EnableTransactionManagement    // to use the @Transactional
 public class ApplicationConfiguration {
     // by default, @ComponentScan only scans the packages and subpackages of the annotated class
     // hence the addition of a class in root packaged as basePackageClass
@@ -81,6 +85,12 @@ public class ApplicationConfiguration {
     @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
+    }
+
+    // enable Spring's transaction management, to open up and commit transactions on db connections
+    @Bean
+    public TransactionManager platformTransactionManager() {
+        return new DataSourceTransactionManager(dataSource());
     }
 
     // Beans needed for Thymeleaf and Spring MVC to work together

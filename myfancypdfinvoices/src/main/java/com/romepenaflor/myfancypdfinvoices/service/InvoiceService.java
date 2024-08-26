@@ -12,6 +12,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -40,7 +42,9 @@ public class InvoiceService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    @Transactional
     public List<Invoice> findAll() {
+        System.out.println("Is a database transaction open? = " + TransactionSynchronizationManager.isActualTransactionActive());
         // row mapper lets you map every returned row to a Java object
         return jdbcTemplate.query("select id, user_id, pdf_url, amount from invoices", (resultSet, rowNum) -> {
             Invoice invoice = new Invoice();
@@ -52,7 +56,9 @@ public class InvoiceService {
         });
     }
 
+    @Transactional
     public Invoice create(String userId, Integer amount) {
+        System.out.println("Is a database transaction open? = " + TransactionSynchronizationManager.isActualTransactionActive());
         String generatedPdfUrl = cdnUrl + "/images/default/sample.pdf";
 
         // make sure that the generated primary key is available via the keyholder
