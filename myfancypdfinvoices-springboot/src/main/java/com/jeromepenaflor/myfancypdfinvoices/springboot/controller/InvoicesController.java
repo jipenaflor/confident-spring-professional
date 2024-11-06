@@ -26,7 +26,7 @@ public class InvoicesController {
     }
 
     @PostMapping("/invoices")
-    public Invoice createInvoice(@RequestBody @Valid InvoiceDto invoiceDto) {
+    public Invoice createInvoice(@Valid @RequestBody InvoiceDto invoiceDto) {
         return invoiceService.create(invoiceDto.getUserId(), invoiceDto.getAmount());
     }
 }

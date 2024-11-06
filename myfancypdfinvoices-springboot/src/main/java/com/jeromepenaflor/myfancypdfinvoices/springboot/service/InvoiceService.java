@@ -44,7 +44,7 @@ public class InvoiceService {
     }
 
     public List<Invoice> findAll() {
-        return jdbcTemplate.query("select id, user_id, pdf_url, amount from invoices", (resultSet, rowNum) -> {
+        return jdbcTemplate.query("select * from invoices", (resultSet, rowNum) -> {
             Invoice invoice = new Invoice();
             invoice.setId(resultSet.getObject("id").toString());    // Not a simple string, but a UUID string
             invoice.setPdfUrl(resultSet.getString("pdf_url"));
