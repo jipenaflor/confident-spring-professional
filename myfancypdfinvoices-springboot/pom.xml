@@ -52,14 +52,21 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId> <!---->
-			<artifactId>spring-boot-starter-jdbc</artifactId>
+			<groupId>org.springframework.boot</groupId> <!--`-->
+			<artifactId>spring-boot-starter-data-jdbc</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId> <!--2-->
 			<artifactId>h2</artifactId>
 		</dependency>
+
+		<!--replaced with spring data jdbc
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		-->
 
 		<!--import custom autoconfiguration-->
 		<!--

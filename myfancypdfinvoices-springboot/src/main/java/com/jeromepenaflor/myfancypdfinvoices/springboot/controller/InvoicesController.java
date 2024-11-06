@@ -3,6 +3,7 @@ package com.jeromepenaflor.myfancypdfinvoices.springboot.controller;
 import com.jeromepenaflor.myfancypdfinvoices.springboot.dto.InvoiceDto;
 import com.jeromepenaflor.myfancypdfinvoices.springboot.model.Invoice;
 import com.jeromepenaflor.myfancypdfinvoices.springboot.service.InvoiceService;
+import com.jeromepenaflor.myfancypdfinvoices.springboot.service.InvoiceServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,13 +16,13 @@ import java.util.List;
 public class InvoicesController {
     private final InvoiceService invoiceService;
 
-    public InvoicesController(InvoiceService invoiceService) {
+    public InvoicesController(InvoiceServiceImpl invoiceService) {
         this.invoiceService = invoiceService;
     }
 
     @GetMapping("/invoices")
     // @RequestMapping(value = "/invoices", method = RequestMethod.GET)
-    public List<Invoice> invoices() {
+    public Iterable<Invoice> invoices() {
         return invoiceService.findAll();
     }
 
