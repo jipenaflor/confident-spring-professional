@@ -1,10 +1,14 @@
 package com.jeromepenaflor.myfancypdfinvoices.springboot.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.UUID;
 
+@Table("invoices")  // to let the repository know the name of the table
 public class Invoice {
+    @Id // to let spring data jdbc know what is the primary key
     private String id;
     @JsonProperty("user_id")
     private String userId;

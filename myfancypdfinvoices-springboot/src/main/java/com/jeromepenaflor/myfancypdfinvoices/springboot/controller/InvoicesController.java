@@ -4,6 +4,7 @@ import com.jeromepenaflor.myfancypdfinvoices.springboot.dto.InvoiceDto;
 import com.jeromepenaflor.myfancypdfinvoices.springboot.model.Invoice;
 import com.jeromepenaflor.myfancypdfinvoices.springboot.service.InvoiceService;
 import com.jeromepenaflor.myfancypdfinvoices.springboot.service.InvoiceServiceImpl;
+import com.jeromepenaflor.myfancypdfinvoices.springboot.service.InvoiceServiceJdbc;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +15,9 @@ import java.util.List;
 
 @RestController
 public class InvoicesController {
-    private final InvoiceService invoiceService;
+    private final InvoiceServiceJdbc invoiceService;
 
-    public InvoicesController(InvoiceServiceImpl invoiceService) {
+    public InvoicesController(InvoiceServiceJdbc invoiceService) {
         this.invoiceService = invoiceService;
     }
 
