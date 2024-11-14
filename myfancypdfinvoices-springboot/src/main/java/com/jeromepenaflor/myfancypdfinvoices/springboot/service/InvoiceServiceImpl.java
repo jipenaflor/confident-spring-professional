@@ -42,7 +42,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     public Iterable<Invoice> findAll() {
-        return jdbcTemplate.query("select * from invoices", (resultSet, rowNum) -> {
+        return jdbcTemplate.query("select * from \"invoices\"", (resultSet, rowNum) -> {
             Invoice invoice = new Invoice();
             invoice.setId(resultSet.getObject("id").toString());    // Not a simple string, but a UUID string
             invoice.setPdfUrl(resultSet.getString("pdf_url"));
@@ -50,6 +50,17 @@ public class InvoiceServiceImpl implements InvoiceService {
             invoice.setAmount(resultSet.getInt("amount"));
             return invoice;
         });
+    }
+
+    public Iterable<Invoice> findByUserId(String userId) {
+        return jdbcTemplate.query("select * from \"invoices\" where user_id = ?", (resultSet, rowNum) -> {
+            Invoice invoice = new Invoice();
+            invoice.setId(resultSet.getObject("id").toString());    // Not a simple string, but a UUID string
+            invoice.setPdfUrl(resultSet.getString("pdf_url"));
+            invoice.setUserId(resultSet.getString("user_id"));
+            invoice.setAmount(resultSet.getInt("amount"));
+            return invoice;
+        }, userId);
     }
 
     public Invoice create(String userId, Integer amount) {
@@ -60,7 +71,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         jdbcTemplate.update(connection -> {
             PreparedStatement ps = connection
-                    .prepareStatement("insert into invoices (user_id, pdf_url, amount) values (?, ?, ?)",
+                    .prepareStatement("insert into \"invoices\" (user_id, pdf_url, amount) values (?, ?, ?)",
                             Statement.RETURN_GENERATED_KEYS);
             // setting parameters replaced the (?, ?, ?); safeguard against SQL-injections
             ps.setString(1, userId);
