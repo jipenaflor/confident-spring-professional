@@ -1,25 +1,31 @@
 package com.jeromepenaflor.mybank.springboot.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+@Table("transactions")
 public class Transaction {
+    @Id
     private String id;
     private BigDecimal amount;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mmZ")
     private ZonedDateTime timestamp;
     private String reference;
+    @JsonProperty("bank_slogan")
     private String bankSlogan;
+    @JsonProperty("receiving_user")
     private String receivingUser;
 
     public Transaction() {
     }
 
     public Transaction(BigDecimal amount, ZonedDateTime timestamp, String reference, String bankSlogan, String receivingUser) {
-        this.id = UUID.randomUUID().toString();
         this.amount = amount;
         this.timestamp = timestamp;
         this.reference = reference;

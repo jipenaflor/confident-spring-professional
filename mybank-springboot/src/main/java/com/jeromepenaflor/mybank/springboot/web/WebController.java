@@ -1,6 +1,7 @@
 package com.jeromepenaflor.mybank.springboot.web;
 
-import com.jeromepenaflor.mybank.springboot.service.TransactionService;
+import com.jeromepenaflor.mybank.springboot.service.TransactionServiceImpl;
+import com.jeromepenaflor.mybank.springboot.service.TransactionServiceJdbc;
 import com.jeromepenaflor.mybank.springboot.web.forms.TransactionForm;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class WebController {
-    private final TransactionService transactionService;
+    private final TransactionServiceJdbc transactionService;
     private final String bankSlogan;
 
-    public WebController(TransactionService transactionService,
+    public WebController(TransactionServiceJdbc transactionService,
                          @Value("${bank.slogan}") String bankSlogan) {
         this.transactionService = transactionService;
         this.bankSlogan = bankSlogan;
